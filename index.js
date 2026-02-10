@@ -1,34 +1,16 @@
-import express from "express";
-import mongoose from "mongoose";
+import dotenv from 'dotenv';
+// This forces Node to look in the exact folder where index.js lives
+dotenv.config({ path: './.env' }); 
 
-import namesRouter from "./routes/names.js";
-import registerRouter from "./routes/register.js"; 
-import dotenv from 'dotenv'
+import mongoose from 'mongoose';
 
+console.log("Checking MONGO_URI:", process.env.MONGO_URI);
 
-dotenv.config();
-const app = express();
-const PORT = process.env.port;
+if (!process.env.MONGO_URI) {
+    console.log("❌ Dotenv failed. Hardcoding for now...");
+    process.env.MONGO_URI = "mongodb://127.0.0.1:27017/myDatabase";
+}
 
-
-app.use(express.json());
-
-// Connect to MongoDB
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch((err) => console.error("❌ MongoDB error:", err));
-
-// Home route
-app.get("/", (req, res) => {
-  res.send("<h1>Welcome to the Names API</h1>");
-});
-
-
-app.use("/names", namesRouter);
-app.use("/register", registerRouter); 
-
-
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("✅ Successfully connected to MongoDB"))
+    .catch(err => console.error("❌ Connection error:", err));

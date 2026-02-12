@@ -1,3 +1,3 @@
-MONGO_URI=mongodb://127.0.0.1:27017/myDatabase
+MONGO_URI=mongodb://127.0.0.1:27017/contactDB
 PORT=3000
-JWT_SECRET=your_secret_key
+JWT_SECRET=your_super_secret_key_change_this
